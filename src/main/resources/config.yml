@@ -1,0 +1,18 @@
+server_name: 'Minecraft'
+
+majestic:
+  api_url: 'https://majestic.bot/api/minecraft/webhook'
+  api_key: 'YOUR_API_KEY_HERE'
+  api_secret: 'YOUR_API_SECRET_HERE'
+
+events:
+  player_chat: true
+  player_join: true
+  player_leave: true
+  player_death: true
+
+colors:
+  player_chat: '#0080FF'
+  player_join: '#00FF00'
+  player_leave: '#FF0000'
+  player_death: '#757575'

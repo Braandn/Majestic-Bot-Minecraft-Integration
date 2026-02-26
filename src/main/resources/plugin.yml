@@ -1,0 +1,13 @@
+name: MajesticBot
+main: bot.majestic.MajesticBot
+version: 1.0.0
+api-version: 1.15
+author: braandn
+website: https://majestic.bot
+description: Majestic.Bot Discord Integration Plugin
+
+commands:
+  majestic:
+    permission: majestic.reload
+    description: Majestic Command
+    usage: /<command>
