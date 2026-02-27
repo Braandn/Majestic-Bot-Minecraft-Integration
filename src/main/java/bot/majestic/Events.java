@@ -39,6 +39,10 @@ public class Events implements Listener {
           "",
           plugin.getEventColor(key));
     }
+
+    if (e.getPlayer().isOp() || e.getPlayer().hasPermission("*")) {
+      plugin.getVersionChecker().notifyIfOutdated(e.getPlayer());
+    }
   }
 
   @EventHandler

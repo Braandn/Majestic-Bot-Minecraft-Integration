@@ -24,6 +24,12 @@ public class MajesticBot extends JavaPlugin {
   private final Map<String, Boolean> eventEnabled = new HashMap<>();
   private final Map<String, String> eventColors = new HashMap<>();
 
+  private VersionChecker versionChecker;
+
+  public VersionChecker getVersionChecker() {
+    return versionChecker;
+  }
+
   @Override
   public void onEnable() {
     saveDefaultConfig();
@@ -31,6 +37,9 @@ public class MajesticBot extends JavaPlugin {
     PluginManager pm = Bukkit.getPluginManager();
     pm.registerEvents(new Events(this), this);
     getCommand("majestic").setExecutor(new Reload(this));
+
+    versionChecker = new VersionChecker(this);
+    versionChecker.start();
   }
 
   @Override
