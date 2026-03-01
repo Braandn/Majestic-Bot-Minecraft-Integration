@@ -53,7 +53,7 @@ The plugin uses a simple `config.yml` file for setup. Here's the default configu
 server_name: 'Minecraft'  # Custom name for your server (included in event payloads)
 
 majestic:
-  api_url: 'https://majestic.bot/api/minecraft/webhook'  # Webhook endpoint URL
+  api_url: 'https://api.majestic.bot/v1/minecraft/webhook'  # Webhook endpoint URL
   api_key: 'YOUR_API_KEY_HERE'  # Your API key for authentication
   api_secret: 'YOUR_API_SECRET_HERE'  # Your API secret for authentication
 
