@@ -53,6 +53,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Extract changelog for this version
+      id: changelog
+      run: |
+        # Extract everything between the first ## [x.y.z] header and the next one
+        awk '/^## \[/{if(found) exit; found=1; next} found' CHANGELOG.md > release_notes.md
+        cat release_notes.md
+
     - name: Download all build artifacts
       uses: actions/download-artifact@v4
       with:
@@ -64,4 +74,4 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: downloaded-jars/*.jar
-        generate_release_notes: true
+        body_path: release_notes.md
