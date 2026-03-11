@@ -1,35 +1,118 @@
 # ─────────────────────────────────────────────────
-#  MajesticBot — Minecraft Discord Integration
+#  MajesticBot - Minecraft Discord Integration
 #  https://majestic.bot
 # ─────────────────────────────────────────────────
 
-# Display name for your server (shown in embed footers)
-server_name: 'Minecraft'
+# Display name for your server (shown in embed footers / Discord)
+server_name: ''
 
-# API credentials — generate at:
-# https://majestic.bot/server/YOUR_DISCORD_SERVER_ID/minecraft
+# ─────────────────────────────────────────────────
+#  Connection mode - choose ONE
+#
+#  websocket  Two-way bridge via the Majestic API.
+#             Minecraft events → Discord embeds (handled by Majestic)
+#             Discord messages → Minecraft chat (relayed in-game)
+#             Requires: ws_url, api_key, api_secret
+#
+#  webhook    One-way Discord embeds sent directly to a bare Discord
+#             webhook URL. Majestic Bot not required.
+#             Requires: webhook_url
+#             Note: discord_chat relay is not available in this mode.
+# ─────────────────────────────────────────────────
+
 majestic:
-  api_url: 'https://api.majestic.bot/v1/minecraft/webhook'
+  mode: 'websocket'
+
+  # ── WebSocket mode ──────────────────────────────
+  # Generate credentials at:
+  # https://majestic.bot/server/YOUR_DISCORD_SERVER_ID/minecraft
+  ws_url: 'wss://api.majestic.bot/v1/minecraft/websocket'
   api_key: 'YOUR_API_KEY_HERE'
   api_secret: 'YOUR_API_SECRET_HERE'
 
+  # ── Webhook mode ────────────────────────────────
+  # Paste your Discord webhook URL here and set mode to 'webhook'.
+  webhook_url: 'YOUR_WEBHOOK_URL_HERE'
+
 # ─────────────────────────────────────────────────
-#  Events
+#  Discord → Minecraft chat relay (websocket mode only)
 # ─────────────────────────────────────────────────
-#  Each event has three settings:
-#    enabled  — whether to send this event to Discord
-#    color    — hex color for the Discord embed
-#    message  — custom message template (see variables below)
+#  When a Discord user sends a message in the linked channel it is
+#  relayed into Minecraft chat using the format below.
+#
+#  Supports & color/formatting codes (e.g. &9, &l, &r).
 #
 #  Available variables:
-#    %player_name%     — player's in-game name
-#    %player_uuid%     — player's UUID
-#    %message%         — chat message (player_chat only)
-#    %death_message%   — vanilla death text (player_death only)
-#    %advancement%     — advancement name (player_advancement only)
-#    %server_name%     — this server's name (see above)
-#    %online_players%  — current online player count
-#    %max_players%     — max player slots
+#    %discord_user%  - Discord display name
+#    %discord_tag%   - Full Discord tag (user#0000 or username)
+#    %message%       - Message content
+# ─────────────────────────────────────────────────
+
+discord_chat:
+  enabled: true
+  format: '&9[Discord] &f%discord_user%&7: &f%message%'
+
+# ─────────────────────────────────────────────────
+#  Discord Commands (websocket mode only)
+# ─────────────────────────────────────────────────
+#  Allows Discord users to run server commands from Discord.
+#  Each command can be toggled on/off individually.
+#
+#  Permissions - list Discord role or user IDs that may invoke
+#  each command. Leave both lists empty to allow everyone.
+#  These lists are transmitted to the Majestic bot on connect
+#  (and on /majestic reload) so the bot enforces them on the
+#  Discord side before forwarding the command here.
+#
+#  Supported commands:
+#    ban       - permanently ban a player (and kick if online)
+#    kick      - kick an online player
+#    whitelist - on / off / add <player> / remove <player>
+#    info      - display server info (players, version, TPS)
+#
+#  To find role/user IDs: Enable Developer Mode in Discord
+#  (Settings → Advanced) then right-click a role or user.
+# ─────────────────────────────────────────────────
+
+discord_commands:
+
+  ban:
+    enabled: false
+    allowed_role_ids: []  # [123456789012345678]
+    allowed_user_ids: []  # [987654321098765432, 847654321098765290]
+
+  kick:
+    enabled: false
+    allowed_role_ids: []
+    allowed_user_ids: []
+
+  whitelist:
+    enabled: false
+    allowed_role_ids: []
+    allowed_user_ids: []
+
+  info:
+    enabled: false
+    allowed_role_ids: []
+    allowed_user_ids: []
+
+# ─────────────────────────────────────────────────
+#  Events  (Minecraft → Discord)
+# ─────────────────────────────────────────────────
+#  Each event has three settings:
+#    enabled  - whether to send this event to Discord
+#    color    - hex color for the Discord embed
+#    message  - custom message template (see variables below)
+#
+#  Available variables:
+#    %player_name%     - player's in-game name
+#    %player_uuid%     - player's UUID
+#    %message%         - chat message (player_chat only)
+#    %death_message%   - vanilla death text (player_death only)
+#    %advancement%     - advancement name (player_advancement only)
+#    %server_name%     - this server's name (see above)
+#    %online_players%  - current online player count
+#    %max_players%     - max player slots
 # ─────────────────────────────────────────────────
 
 events:
@@ -70,7 +153,7 @@ events:
     color: '#757575'
     message: '%death_message%'
 
-  # Fired when a player earns an advancement (Paper only)
+  # Fired when a player earns an advancement
   player_advancement:
     enabled: true
     color: '#FF9AFF'

@@ -9,12 +9,12 @@ import org.bukkit.advancement.Advancement;
  * <p>Resolution order (first success wins):
  *
  * <ol>
- *   <li><b>Paper</b> — {@code Advancement.displayName()} → Adventure Component → {@code
+ *   <li><b>Paper</b> - {@code Advancement.displayName()} → Adventure Component → {@code
  *       PlainTextComponentSerializer}. Available on Paper/Folia 1.17+.
- *   <li><b>Spigot 1.19+</b> — {@code Advancement.getDisplay().getTitle()}. Part of the Bukkit API
+ *   <li><b>Spigot 1.19+</b> - {@code Advancement.getDisplay().getTitle()}. Part of the Bukkit API
  *       from ~1.19 onwards. Note: this method is <em>broken on Paper</em> (PaperMC/Paper#8305),
  *       which is why the Paper path is tried first.
- *   <li><b>Fallback</b> — The advancement's {@code NamespacedKey} is formatted into a readable
+ *   <li><b>Fallback</b> - The advancement's {@code NamespacedKey} is formatted into a readable
  *       string (e.g. {@code minecraft:story/mine_diamond → Mine Diamond}).
  * </ol>
  *

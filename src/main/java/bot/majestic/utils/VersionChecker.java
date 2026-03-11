@@ -1,6 +1,5 @@
 package bot.majestic.utils;
 
-import bot.majestic.MajesticBot;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,12 +7,15 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import bot.majestic.MajesticBot;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class VersionChecker {
 
@@ -48,7 +50,7 @@ public class VersionChecker {
 
       int status = con.getResponseCode();
       if (status != 200) {
-        plugin.getLogger().warning("[MajesticBot] GitHub API returned HTTP " + status);
+        plugin.getLogger().warning("GitHub API returned HTTP " + status);
         return;
       }
 
@@ -67,7 +69,7 @@ public class VersionChecker {
       String htmlUrl = extractJsonField(json, "html_url");
 
       if (tagName == null || htmlUrl == null) {
-        plugin.getLogger().warning("[MajesticBot] Could not parse GitHub release response.");
+        plugin.getLogger().warning("Could not parse GitHub release response.");
         return;
       }
 
@@ -81,18 +83,18 @@ public class VersionChecker {
         plugin
             .getLogger()
             .warning(
-                "[MajesticBot] A new version is available: "
+                "A new version is available: "
                     + latestVersion
                     + " (current: "
                     + currentVersion
                     + ") -> "
                     + downloadUrl);
       } else {
-        plugin.getLogger().info("[MajesticBot] Plugin is up to date (" + currentVersion + ").");
+        plugin.getLogger().info("Plugin is up to date (" + currentVersion + ").");
       }
 
     } catch (IOException | URISyntaxException e) {
-      plugin.getLogger().warning("[MajesticBot] Failed to check for updates: " + e.getMessage());
+      plugin.getLogger().warning("Failed to check for updates: " + e.getMessage());
     }
   }
 
@@ -100,7 +102,7 @@ public class VersionChecker {
     if (!updateAvailable || !player.isOp()) return;
 
     player.sendMessage(
-        Component.text("[MajesticBot] ", NamedTextColor.GOLD)
+        Component.text("", NamedTextColor.GOLD)
             .append(Component.text("A new version is available: ", NamedTextColor.YELLOW))
             .append(Component.text(latestVersion, NamedTextColor.GREEN))
             .append(Component.text(" — ", NamedTextColor.YELLOW))

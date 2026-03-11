@@ -1,9 +1,8 @@
 package bot.majestic;
 
-import bot.majestic.utils.AdvancementNameResolver;
-import bot.majestic.utils.MessageFormatter;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +11,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import bot.majestic.utils.AdvancementNameResolver;
+import bot.majestic.utils.MessageFormatter;
 
 public class Events implements Listener {
 

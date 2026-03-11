@@ -14,14 +14,19 @@ jobs:
       matrix:
         include:
           - paper_version: '1.21.11-R0.1-SNAPSHOT'
+            mc_version: '1.21.11'
             java_version: '21'
           - paper_version: '1.20.4-R0.1-SNAPSHOT'
+            mc_version: '1.20.4'
             java_version: '17'
           - paper_version: '1.19.4-R0.1-SNAPSHOT'
+            mc_version: '1.19.4'
             java_version: '17'
           - paper_version: '1.18.2-R0.1-SNAPSHOT'
+            mc_version: '1.18.2'
             java_version: '17'
           - paper_version: '1.17.1-R0.1-SNAPSHOT'
+            mc_version: '1.17.1'
             java_version: '17'
 
     steps:
@@ -37,9 +42,10 @@ jobs:
 
     - name: Build with Maven
       run: >
-        mvn clean package 
-        -Dpaper.version=${{ matrix.paper_version }} 
-        -Djava.version=${{ matrix.java_version }} 
+        mvn clean package
+        -Dpaper.version=${{ matrix.paper_version }}
+        -Dmc.version=${{ matrix.mc_version }}
+        -Djava.version=${{ matrix.java_version }}
         -Drevision=${GITHUB_REF_NAME#v}
 
     - name: Upload Artifacts

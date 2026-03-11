@@ -12,8 +12,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<paper.version>1.21-R0.1-SNAPSHOT</paper.version>
+		<mc.version>1.21</mc.version>
 		<java.version>21</java.version>
-		<revision>2.0.0</revision>
+		<revision>3.0.0</revision>
 	</properties>
 
 	<repositories>
@@ -33,7 +34,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}-${project.version}_${paper.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}_${mc.version}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

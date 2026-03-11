@@ -10,12 +10,12 @@ import java.util.regex.Pattern;
  * <p>Available variables:
  *
  * <ul>
- *   <li>%player_name% — in-game player name
- *   <li>%player_uuid% — player UUID
- *   <li>%message% — chat message text
- *   <li>%death_message% — vanilla death message
- *   <li>%advancement% — advancement display name
- *   <li>%server_name% — configured server name
+ *   <li>%player_name% - in-game player name
+ *   <li>%player_uuid% - player UUID
+ *   <li>%message% - chat message text
+ *   <li>%death_message% - vanilla death message
+ *   <li>%advancement% - advancement display name
+ *   <li>%server_name% - configured server name
  * </ul>
  */
 public class MessageFormatter {

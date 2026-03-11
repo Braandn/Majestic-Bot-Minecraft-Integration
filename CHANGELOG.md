@@ -2,6 +2,42 @@
 
 All notable changes to MajesticBot will be documented in this file.
 
+## [3.0.0] - 2026-03-11
+
+### ⚠️ Breaking Changes
+- **WebSocket replaces HTTP** - The plugin no longer sends one-off HTTP POST requests. It now maintains a persistent WebSocket connection to the Majestic API. Update your config accordingly (see below).
+- **`majestic.api_url` renamed to `majestic.ws_url`** - The value must be a WebSocket URL (`wss://`). Delete your old `plugins/MajesticBot/config.yml` and let the plugin generate the new default, then re-enter your credentials.
+
+### Added
+- **Dual-mode architecture** - choose one delivery mode per server via `majestic.mode` in `config.yml`:
+  - **`websocket`** (default) - two-way persistent `wss://` connection to the Majestic API. Requires `api_key` + `api_secret`.
+  - **`webhook`** - one-way Discord embeds sent directly to a bare Discord webhook URL. Majestic Bot not required.
+- **Webhook mode** (`majestic.mode: webhook`):
+  - Sends Discord embeds via HTTP POST to `majestic.webhook_url`.
+  - Embed layout matches the Majestic API embed output exactly: player avatar from mc-heads.net, event color, timestamp, server name in the footer.
+  - `PlayerChat` → author `"playerName:"` + avatar; title (or description if > 256 chars) = message.
+  - Other player events → author = display message + avatar.
+  - Server events → title (or description if > 256 chars) = message; no author.
+  - Runs asynchronously for normal events; blocks on server-stop to guarantee delivery.
+- **Two-way WebSocket bridge** (`majestic.mode: websocket`):
+  - **Minecraft → Discord**: server/player events are sent over the socket as JSON frames.
+  - **Discord → Minecraft**: `DiscordMessage` frames from the API are broadcast into in-game chat.
+- **Discord → Minecraft chat relay** (WebSocket mode only) - configurable via `discord_chat.format`, supports `&` color codes and variables: `%discord_user%`, `%discord_tag%`, `%message%`.
+- **Discord Commands** (WebSocket mode only) - Discord users can run server commands from Discord. Each command is individually toggled and gated behind per-command `allowed_role_ids` / `allowed_user_ids` lists (Discord snowflake IDs). Commands: `ban`, `kick`, `whitelist` (`on`/`off`/`add`/`remove`), `info`. Permission lists are transmitted to the Majestic bot via a `RegisterCommands` frame on every WebSocket open (including reconnects and `/majestic reload`) so the bot enforces them on the Discord side before forwarding. The plugin also validates permissions as a second line of defence and returns a `CommandResult` frame for every invocation.
+- **WebSocket authentication via handshake headers** - `X-Api-Key` and `X-Api-Secret` sent as HTTP upgrade headers.
+- **Auto-reconnect** - WebSocket reconnects after a 15-second backoff on unexpected close or error.
+- **Message queuing on startup** - Events fired before the handshake completes (e.g. `server_start`) are queued and flushed on `onOpen`.
+- **`/majestic reload` reconnects** - also tears down and re-establishes the active connection with fresh credentials.
+
+### Changed
+- `majestic.api_url` (HTTP endpoint) → `majestic.ws_url` (WebSocket endpoint, `wss://` scheme).
+- `sendEvent` / `sendEventSync` now dispatch to the active mode's sender (`WebSocketManager` or `WebhookSender`).
+- `server_stop` blocks until the message is confirmed sent before the connection is closed.
+
+### Removed
+- Direct HTTP POST to the Majestic API - replaced by `WebSocketManager` (WebSocket mode) and `WebhookSender` (webhook mode).
+
+
 ## [2.0.0] - 2026-03-02
 
 ### ⚠️ Breaking Changes
